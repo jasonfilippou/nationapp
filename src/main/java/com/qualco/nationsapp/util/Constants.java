@@ -15,4 +15,8 @@ public final class Constants {
 
     public static final DateTimeFormatter YEAR_FORMATTER =
             DateTimeFormatter.ofPattern(GLOBAL_YEAR_PATTERN);
+
+    public static final String YEAR_FROM = "yearFrom";
+
+    public static final String YEAR_TO = "yearTo";
 }

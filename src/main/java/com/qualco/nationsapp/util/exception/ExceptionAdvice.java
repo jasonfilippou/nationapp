@@ -1,6 +1,7 @@
 package com.qualco.nationsapp.util.exception;
 
 import jakarta.validation.ConstraintViolationException;
+
 import org.hibernate.HibernateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -85,13 +86,18 @@ public class ExceptionAdvice {
      *     HttpStatus#NOT_FOUND} as the status code.
      */
     @ResponseBody
-    @ExceptionHandler({
-            UsernameNotFoundException.class,
-            CountryNotFoundException.class
-    })
+    @ExceptionHandler({UsernameNotFoundException.class, CountryNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ExceptionMessageContainer> notFoundStatusMessage(Exception exc) {
         return new ResponseEntity<>(
                 new ExceptionMessageContainer(exc.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
+    @ResponseBody
+    @ExceptionHandler({DataAccessLayerException.class})
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<ExceptionMessageContainer> internalServerErrorMessage(Exception exc) {
+        return new ResponseEntity<>(
+                new ExceptionMessageContainer(exc.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

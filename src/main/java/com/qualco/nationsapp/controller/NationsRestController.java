@@ -1,31 +1,34 @@
 package com.qualco.nationsapp.controller;
 
+import static com.qualco.nationsapp.util.Constants.*;
+
+import com.qualco.nationsapp.model.BasicCountryEntry;
 import com.qualco.nationsapp.model.CountryWithMaxGDPPerCapitaEntry;
 import com.qualco.nationsapp.model.StatsEntry;
-import com.qualco.nationsapp.util.exception.BadDateFormatException;
-import com.qualco.nationsapp.util.exception.CountryNotFoundException;
-import com.qualco.nationsapp.util.exception.InvalidSortByFieldException;
-import com.qualco.nationsapp.model.BasicCountryEntry;
 import com.qualco.nationsapp.service.NationsRestService;
 import com.qualco.nationsapp.util.PaginatedQueryParams;
 import com.qualco.nationsapp.util.SortOrder;
+import com.qualco.nationsapp.util.exception.BadDateFormatException;
+import com.qualco.nationsapp.util.exception.CountryNotFoundException;
+import com.qualco.nationsapp.util.exception.InvalidSortByFieldException;
 import com.qualco.nationsapp.util.logger.Logged;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
+
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import static com.qualco.nationsapp.util.Constants.*;
 
 @RestController
 @RequestMapping("/nationapi")
@@ -82,7 +85,7 @@ public class NationsRestController {
             @RequestParam(name = "sort_by_field", defaultValue = "name") @NotBlank String sortByField,
             @RequestParam(name = "sort_order", defaultValue = DEFAULT_SORT_ORDER) @NonNull SortOrder sortOrder){
         sortByField = sortByField.trim();
-        checkIfFieldToSortByIsAcceptable(sortByField, Collections.singletonList("name"));
+        checkIfFieldToSortByIsAcceptable(sortByField, List.of("name", "country_code3", "maxGDPPerCapita"));
         return ResponseEntity.ok(service.getMaxGDPPerCapita(PaginatedQueryParams.builder()
                 .page(page)
                 .pageSize(size)
@@ -111,7 +114,7 @@ public class NationsRestController {
                 .sortByField(sortByField)
                 .pageSize(size)
                 .sortOrder(sortOrder)
-                .filterParams(Map.of("yearFrom", yearFrom, "yearTo", yearTo))
+                .filterParams(Map.of(YEAR_FROM, yearFrom, YEAR_TO, yearTo))
                 .build()));
     }
 

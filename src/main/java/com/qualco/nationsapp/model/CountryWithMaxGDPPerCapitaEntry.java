@@ -11,11 +11,5 @@ import java.math.BigDecimal;
 public class CountryWithMaxGDPPerCapitaEntry {
     private String name;
     private String countryCode;
-
-    private Integer year;
-
-    private Long population;
-
     private BigDecimal maxGDPPerCapita;
-    
 }
