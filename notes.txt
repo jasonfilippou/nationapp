@@ -19,7 +19,7 @@ For Task 2:
 
 				The aggregation is the issue... I think that the following will be good: 
 				
-				select country_id, max(gdp/population) from country_stats group by country_id;
+				select countries.name as name, max(gdp/population) as gdppercapita from countries inner join country_stats on countries.country_id = country_stats.country_id group by country_stats.country_id;
 
 				Enable sorting / pagination. 
 
@@ -29,8 +29,11 @@ For Task 3:
 
 	- GET /nationapi/stats/{region_name}
 
-	Request params for both: dateFrom, dateTo
+	Request params for both: yearFrom, yearTo
 
 	Enable sorting / pagination.
 
-	FIGURE OUT THE SQL QUERY BEFORE YOU START THE CONTROLLER.
+
+	select continents.name as continent_name, regions.name as region_name, countries.name as country_name, country_stats.year as year, country_stats.population as population, country_stats.gdp as gdp
+	from continents inner join regions ON continents.continent_id = regions.continent_id inner join countries ON 
+	regions.region_id = countries.region_id inner join country_stats on countries.country_id = country_stats.country_id; 

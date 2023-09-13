@@ -1,4 +1,4 @@
-package com.qualco.nationsapp.exception;
+package com.qualco.nationsapp.util.exception;
 
 /**
  * A {@link RuntimeException} thrown in cases of a bad date format provided by the user.

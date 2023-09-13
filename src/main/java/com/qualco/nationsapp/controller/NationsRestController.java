@@ -1,7 +1,12 @@
 package com.qualco.nationsapp.controller;
 
-import com.qualco.nationsapp.exception.BadDateFormatException;
-import com.qualco.nationsapp.exception.InvalidSortByFieldException;
+import com.qualco.nationsapp.model.CountryWithMaxGDPPerCapitaEntry;
+import com.qualco.nationsapp.model.StatsEntry;
+import com.qualco.nationsapp.util.exception.BadDateFormatException;
+import com.qualco.nationsapp.util.exception.CountryNotFoundException;
+import com.qualco.nationsapp.util.exception.InvalidSortByFieldException;
+import com.qualco.nationsapp.model.BasicCountryEntry;
+import com.qualco.nationsapp.service.NationsRestService;
 import com.qualco.nationsapp.util.PaginatedQueryParams;
 import com.qualco.nationsapp.util.SortOrder;
 import com.qualco.nationsapp.util.logger.Logged;
@@ -34,7 +39,7 @@ public class NationsRestController {
 
     // Task 1(a)
     @GetMapping("/countries")
-    public ResponseEntity<?> getAllCountries(
+    public ResponseEntity<List<BasicCountryEntry>> getAllCountries(
             @RequestParam(name = "page", defaultValue = DEFAULT_PAGE_IDX) @Min(0) Integer page,
             @RequestParam(name = "items_in_page", defaultValue = DEFAULT_PAGE_SIZE) @Min(1) Integer size,
             @RequestParam(name = "sort_by_field", defaultValue = "name") @NonNull @NotBlank String sortByField,
@@ -43,7 +48,12 @@ public class NationsRestController {
         sortByField = sortByField.trim();
         List<String> acceptableFieldsForSorting = List.of("name", "area", "country_code2");
         checkIfFieldToSortByIsAcceptable(sortByField, acceptableFieldsForSorting);
-        return service.getAllCountries(page, size, sortByField, sortOrder);
+        return ResponseEntity.ok(service.getAllCountries(PaginatedQueryParams.builder()
+                .page(page)
+                .pageSize(size)
+                .sortByField(sortByField)
+                .sortOrder(sortOrder)
+                .build()));
     }
 
     private void checkIfFieldToSortByIsAcceptable(String field, List<String> acceptableFields)
@@ -55,57 +65,61 @@ public class NationsRestController {
 
     // Task 1(b)
     @GetMapping("/languages/{countryName}")
-    public ResponseEntity<?> getLanguagesOfCountry(@PathVariable @NotBlank String countryName){
-        return service.getLanguagesOfCountry(countryName);
+    public ResponseEntity<List<String>> getLanguagesOfCountry(@PathVariable @NotBlank String countryName)
+                throws CountryNotFoundException {
+        List<String> languages = service.getLanguagesOfCountry(countryName);
+        if(languages.isEmpty()){
+            throw new CountryNotFoundException(countryName);
+        }
+        return ResponseEntity.ok(languages);
     }
 
     // Task 2
     @GetMapping("/maxgdppercapita/")
-    public ResponseEntity<?> getMaxGdpPerCapita(
+    public ResponseEntity<List<CountryWithMaxGDPPerCapitaEntry>> getMaxGdpPerCapita(
             @RequestParam(name = "page", defaultValue = DEFAULT_PAGE_IDX) @Min(0) Integer page,
             @RequestParam(name = "items_in_page", defaultValue = DEFAULT_PAGE_SIZE) @Min(1) Integer size,
             @RequestParam(name = "sort_by_field", defaultValue = "name") @NotBlank String sortByField,
             @RequestParam(name = "sort_order", defaultValue = DEFAULT_SORT_ORDER) @NonNull SortOrder sortOrder){
         sortByField = sortByField.trim();
         checkIfFieldToSortByIsAcceptable(sortByField, Collections.singletonList("name"));
-        return service.getMaxGDPPerCapita(PaginatedQueryParams.builder()
+        return ResponseEntity.ok(service.getMaxGDPPerCapita(PaginatedQueryParams.builder()
                 .page(page)
                 .pageSize(size)
                 .sortByField(sortByField)
                 .sortOrder(sortOrder)
-                .build());
-
+                .build()));
     }
 
     // Task 3(a)
     @GetMapping("/stats")
-    public ResponseEntity<?> getStats(
+    public ResponseEntity<List<StatsEntry>> getStats(
             @RequestParam(name = "page", defaultValue = DEFAULT_PAGE_IDX) @Min(0) Integer page,
             @RequestParam(name = "items_in_page", defaultValue = DEFAULT_PAGE_SIZE) @Min(1) Integer size,
-            @RequestParam(name = "sort_by_field", defaultValue = "name") @NotBlank String sortByField,
+            @RequestParam(name = "sort_by_field", defaultValue = "continent_name") @NotBlank String sortByField,
             @RequestParam(name = "sort_order", defaultValue = DEFAULT_SORT_ORDER) @NonNull SortOrder sortOrder,
-            @RequestParam(name = "yearFrom", defaultValue = "1960") @NotBlank String yearFrom,
-            @RequestParam(name = "yearTo", defaultValue = "2018") @NotBlank String yearTo)
+            @RequestParam(name = "yearFrom", required = false) String yearFrom,
+            @RequestParam(name = "yearTo", required = false) String yearTo)
             throws InvalidSortByFieldException, BadDateFormatException{
         sortByField = sortByField.trim();
         checkIfFieldToSortByIsAcceptable(sortByField, List.of("continent_name", "region_name", "country_name", "year",
                 "population", "gdp"));
         checkYearFormat(yearFrom);
         checkYearFormat(yearTo);
-        return service.getStats(PaginatedQueryParams.builder()
+        return ResponseEntity.ok(service.getStats(PaginatedQueryParams.builder()
                 .page(page)
                 .sortByField(sortByField)
                 .pageSize(size)
                 .sortOrder(sortOrder)
                 .filterParams(Map.of("yearFrom", yearFrom, "yearTo", yearTo))
-                .build());
+                .build()));
     }
 
     private void checkYearFormat(String year) throws BadDateFormatException{
         try {
-            LocalDate.parse(year, YEAR_FORMATTER);
+            LocalDate.parse(year, YEAR_FORMATTER); // Call only for side-effect
         } catch(DateTimeParseException exception){
-            throw new BadDateFormatException("year " + year + "not in yyyy format.");
+            throw new BadDateFormatException("year " + year + " not in yyyy format.");
         }
     }
 

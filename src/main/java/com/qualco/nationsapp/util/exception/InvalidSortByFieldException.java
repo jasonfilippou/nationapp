@@ -1,4 +1,4 @@
-package com.qualco.nationsapp.exception;
+package com.qualco.nationsapp.util.exception;
 
 import java.util.List;
 import lombok.Getter;
