@@ -15,12 +15,14 @@ import com.qualco.nationsapp.util.logger.Logged;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import jakarta.validation.ValidationException;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -94,28 +96,38 @@ public class NationsRestController {
                 .build()));
     }
 
-    // Task 3(a)
+    // Task 3(a) and 3(b)
     @GetMapping("/stats")
     public ResponseEntity<List<StatsEntry>> getStats(
+            @RequestParam Map<String, String> filterParams,
             @RequestParam(name = "page", defaultValue = DEFAULT_PAGE_IDX) @Min(0) Integer page,
             @RequestParam(name = "items_in_page", defaultValue = DEFAULT_PAGE_SIZE) @Min(1) Integer size,
             @RequestParam(name = "sort_by_field", defaultValue = "continent_name") @NotBlank String sortByField,
-            @RequestParam(name = "sort_order", defaultValue = DEFAULT_SORT_ORDER) @NonNull SortOrder sortOrder,
-            @RequestParam(name = "yearFrom", required = false) String yearFrom,
-            @RequestParam(name = "yearTo", required = false) String yearTo)
-            throws InvalidSortByFieldException, BadDateFormatException{
+            @RequestParam(name = "sort_order", defaultValue = DEFAULT_SORT_ORDER) @NonNull SortOrder sortOrder)
+            throws InvalidSortByFieldException, BadDateFormatException, ValidationException{
         sortByField = sortByField.trim();
         checkIfFieldToSortByIsAcceptable(sortByField, List.of("continent_name", "region_name", "country_name", "year",
                 "population", "gdp"));
-        checkYearFormat(yearFrom);
-        checkYearFormat(yearTo);
+        checkFilters(filterParams);
         return ResponseEntity.ok(service.getStats(PaginatedQueryParams.builder()
                 .page(page)
                 .sortByField(sortByField)
                 .pageSize(size)
                 .sortOrder(sortOrder)
-                .filterParams(Map.of(YEAR_FROM, yearFrom, YEAR_TO, yearTo))
+                .filterParams(filterParams)
                 .build()));
+    }
+
+    private void checkFilters(Map<String, String> filters) throws BadDateFormatException, ValidationException{
+        if(filters.containsKey(YEAR_FROM)){
+            checkYearFormat(filters.get(YEAR_FROM));
+        }
+        if(filters.containsKey(YEAR_TO)){
+            checkYearFormat(filters.get(YEAR_TO));
+        }
+        if (filters.containsKey("region") && StringUtils.isBlank(filters.get("region"))) {
+            throw new ValidationException("When provided, \"region\" key needs to map to non-empty value.");
+        }
     }
 
     private void checkYearFormat(String year) throws BadDateFormatException{
@@ -125,6 +137,4 @@ public class NationsRestController {
             throw new BadDateFormatException("year " + year + " not in yyyy format.");
         }
     }
-
-    // Task 3(b)
 }

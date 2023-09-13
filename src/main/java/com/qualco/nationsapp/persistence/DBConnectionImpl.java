@@ -1,13 +1,18 @@
 package com.qualco.nationsapp.persistence;
 
+import static com.qualco.nationsapp.util.Constants.YEAR_FROM;
+import static com.qualco.nationsapp.util.Constants.YEAR_TO;
+
 import com.qualco.nationsapp.model.BasicCountryEntry;
 import com.qualco.nationsapp.model.CountryWithMaxGDPPerCapitaEntry;
 import com.qualco.nationsapp.model.StatsEntry;
 import com.qualco.nationsapp.util.PaginatedQueryParams;
 import com.qualco.nationsapp.util.exception.DataAccessLayerException;
 import com.qualco.nationsapp.util.logger.Logged;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -17,9 +22,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import static com.qualco.nationsapp.util.Constants.YEAR_FROM;
-import static com.qualco.nationsapp.util.Constants.YEAR_TO;
 
 @Logged
 @Slf4j
@@ -110,13 +112,20 @@ public class DBConnectionImpl implements DBConnection{
     }
 
     private String buildWhereClause(Map<String, String> filters){
+        StringBuilder strBuilder = new StringBuilder(); // Faster than StringBuffer in a single-threaded environment.
         if(filters.containsKey(YEAR_FROM) && filters.containsKey(YEAR_TO)){
-            return "year >= " + filters.get(YEAR_FROM) + " AND year <="  + filters.get(YEAR_TO);
+            strBuilder.append("year >= ").append(filters.get(YEAR_FROM)).append(" AND year <=").append(filters.get(YEAR_TO));
         } else if(filters.containsKey(YEAR_FROM)){
-            return "year >= " + filters.get(YEAR_FROM);
+            strBuilder.append("year >= ").append(filters.get(YEAR_FROM));
         } else if(filters.containsKey(YEAR_TO)){
-            return "year <= " + filters.get(YEAR_TO);
+            strBuilder.append("year <= ").append(filters.get(YEAR_TO));
+        } else {
+            strBuilder.append(IDENTITY);
         }
-        return IDENTITY;
+        if(filters.containsKey("region")){ 
+            // Controller already checked the value to be non-blank
+            strBuilder.append(" AND region = ").append(filters.get("region"));
+        }
+        return strBuilder.toString();
     }
 }
