@@ -2,6 +2,7 @@ package com.qualco.nationsapp.controller;
 
 import static com.qualco.nationsapp.util.Constants.*;
 
+import com.google.common.collect.Maps;
 import com.qualco.nationsapp.model.BasicCountryEntry;
 import com.qualco.nationsapp.model.CountryWithMaxGDPPerCapitaEntry;
 import com.qualco.nationsapp.model.StatsEntry;
@@ -80,7 +81,7 @@ public class NationsRestController {
     }
 
     // Task 2
-    @GetMapping("/maxgdppercapita/")
+    @GetMapping("/maxgdppercapita")
     public ResponseEntity<List<CountryWithMaxGDPPerCapitaEntry>> getMaxGdpPerCapita(
             @RequestParam(name = "page", defaultValue = DEFAULT_PAGE_IDX) @Min(0) Integer page,
             @RequestParam(name = "items_in_page", defaultValue = DEFAULT_PAGE_SIZE) @Min(1) Integer size,
@@ -99,33 +100,35 @@ public class NationsRestController {
     // Task 3(a) and 3(b)
     @GetMapping("/stats")
     public ResponseEntity<List<StatsEntry>> getStats(
-            @RequestParam Map<String, String> filterParams,
             @RequestParam(name = "page", defaultValue = DEFAULT_PAGE_IDX) @Min(0) Integer page,
             @RequestParam(name = "items_in_page", defaultValue = DEFAULT_PAGE_SIZE) @Min(1) Integer size,
             @RequestParam(name = "sort_by_field", defaultValue = "continent_name") @NotBlank String sortByField,
-            @RequestParam(name = "sort_order", defaultValue = DEFAULT_SORT_ORDER) @NonNull SortOrder sortOrder)
+            @RequestParam(name = "sort_order", defaultValue = DEFAULT_SORT_ORDER) @NonNull SortOrder sortOrder,
+            @RequestParam(name = "year_from", required = false) String yearFrom,
+            @RequestParam(name = "year_to", required = false) String yearTo,
+            @RequestParam(name = "region", required = false) String region)
             throws InvalidSortByFieldException, BadDateFormatException, ValidationException{
         sortByField = sortByField.trim();
         checkIfFieldToSortByIsAcceptable(sortByField, List.of("continent_name", "region_name", "country_name", "year",
                 "population", "gdp"));
-        checkFilters(filterParams);
+        checkFilters(yearFrom, yearTo, region);
         return ResponseEntity.ok(service.getStats(PaginatedQueryParams.builder()
                 .page(page)
                 .sortByField(sortByField)
                 .pageSize(size)
                 .sortOrder(sortOrder)
-                .filterParams(filterParams)
+                .filterParams(createFilterParams(yearFrom, yearTo, region))
                 .build()));
     }
 
-    private void checkFilters(Map<String, String> filters) throws BadDateFormatException, ValidationException{
-        if(filters.containsKey(YEAR_FROM)){
-            checkYearFormat(filters.get(YEAR_FROM));
+    private void checkFilters(String yearFrom, String yearTo, String region) throws BadDateFormatException, ValidationException{
+        if(yearFrom != null){
+            checkYearFormat(yearFrom);
         }
-        if(filters.containsKey(YEAR_TO)){
-            checkYearFormat(filters.get(YEAR_TO));
+        if(yearTo != null){
+            checkYearFormat(yearTo);
         }
-        if (filters.containsKey("region") && StringUtils.isBlank(filters.get("region"))) {
+        if (region != null && StringUtils.isBlank(region)) {
             throw new ValidationException("When provided, \"region\" key needs to map to non-empty value.");
         }
     }
@@ -134,7 +137,21 @@ public class NationsRestController {
         try {
             LocalDate.parse(year, YEAR_FORMATTER); // Call only for side-effect
         } catch(DateTimeParseException exception){
-            throw new BadDateFormatException("year " + year + " not in yyyy format.");
+                throw new BadDateFormatException("year " + year + " not in yyyy format.");
         }
+    }
+
+    private Map<String, String> createFilterParams(String yearFrom, String yearTo, String region){
+        Map<String, String> filterParams = Maps.newHashMap();
+        if(yearFrom != null){
+            filterParams.put(YEAR_FROM, yearFrom);
+        }
+        if(yearTo != null){
+            filterParams.put(YEAR_TO, yearTo);
+        }
+        if(region != null){
+            filterParams.put("region", region);
+        }
+        return filterParams;
     }
 }

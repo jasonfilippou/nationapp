@@ -57,7 +57,7 @@ public class DBConnectionImpl implements DBConnection{
                 """
                 SELECT languages.language AS language 
                 FROM languages INNER JOIN country_languages ON languages.language_id =  country_languages.language_id 
-                INNER JOIN countries ON country_languages.country_id = countries.country_id AND countries.name = %s
+                INNER JOIN countries ON country_languages.country_id = countries.country_id AND countries.name = '%s'
                 """, country);
         try {
             return jdbcTemplate.queryForList(query, String.class);
@@ -114,7 +114,7 @@ public class DBConnectionImpl implements DBConnection{
     private String buildWhereClause(Map<String, String> filters){
         StringBuilder strBuilder = new StringBuilder(); // Faster than StringBuffer in a single-threaded environment.
         if(filters.containsKey(YEAR_FROM) && filters.containsKey(YEAR_TO)){
-            strBuilder.append("year >= ").append(filters.get(YEAR_FROM)).append(" AND year <=").append(filters.get(YEAR_TO));
+            strBuilder.append("country_stats.year >= ").append(filters.get(YEAR_FROM)).append(" AND country_stats.year <=").append(filters.get(YEAR_TO));
         } else if(filters.containsKey(YEAR_FROM)){
             strBuilder.append("year >= ").append(filters.get(YEAR_FROM));
         } else if(filters.containsKey(YEAR_TO)){
@@ -124,7 +124,7 @@ public class DBConnectionImpl implements DBConnection{
         }
         if(filters.containsKey("region")){ 
             // Controller already checked the value to be non-blank
-            strBuilder.append(" AND region = ").append(filters.get("region"));
+            strBuilder.append(" AND regions.name = '").append(filters.get("region")).append("'");
         }
         return strBuilder.toString();
     }

@@ -6,8 +6,6 @@ import org.hibernate.HibernateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -53,7 +51,7 @@ public class ExceptionAdvice {
      */
     @ResponseBody
     @ExceptionHandler({
-        BadCredentialsException.class,
+//        BadCredentialsException.class,
     })
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<ExceptionMessageContainer> unauthorizedStatusMessage(Exception exc) {
@@ -86,7 +84,7 @@ public class ExceptionAdvice {
      *     HttpStatus#NOT_FOUND} as the status code.
      */
     @ResponseBody
-    @ExceptionHandler({UsernameNotFoundException.class, CountryNotFoundException.class})
+    @ExceptionHandler({/*UsernameNotFoundException.class,*/ CountryNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ExceptionMessageContainer> notFoundStatusMessage(Exception exc) {
         return new ResponseEntity<>(
