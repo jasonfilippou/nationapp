@@ -1,0 +1,36 @@
+For Task 1:
+
+	- GET /nationapi/countries
+
+			In the backend, you will have an SQL query on the countries table.
+
+		 	Enable sorting / pagination. Feed directly to jdbcTemplate query with OFFSET and LIMIT parameters. Default sort by field is ID.
+
+	- GET /nationapi/languages/{country_name}
+
+			In the backend, you need to connect countries table with country_languages table using an INNER JOIN ****BASED ON THE ID***.
+
+			No real pagination required here.
+
+
+For Task 2:
+
+	- GET /nationapi/maxgdppercapita/
+
+				The aggregation is the issue... I think that the following will be good: 
+				
+				select country_id, max(gdp/population) from country_stats group by country_id;
+
+				Enable sorting / pagination. 
+
+For Task 3:
+
+	- GET /nationapi/stats/ (for all regions)
+
+	- GET /nationapi/stats/{region_name}
+
+	Request params for both: dateFrom, dateTo
+
+	Enable sorting / pagination.
+
+	FIGURE OUT THE SQL QUERY BEFORE YOU START THE CONTROLLER.
