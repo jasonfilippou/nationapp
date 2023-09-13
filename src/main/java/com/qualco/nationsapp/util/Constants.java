@@ -8,6 +8,13 @@ import java.time.temporal.ChronoField;
 public final class Constants {
     private Constants(){}
 
+    /**
+     * Standard authentication header prefix.
+     */
+    public static final String AUTH_HEADER_BEARER_PREFIX = "Bearer" + " ";
+    /** Tune this to affect how long the JWT token lasts. Default is 5 * 60 * 60, for 5 hours. */
+    public static final long JWT_VALIDITY = 5 * 60 * 60;
+
     public static final String DEFAULT_PAGE_IDX = "0";
     public static final String DEFAULT_PAGE_SIZE = "5";
     public static final String DEFAULT_SORT_BY_FIELD = "id";

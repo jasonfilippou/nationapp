@@ -1,4 +1,4 @@
-package com.qualco.nationsapp.model;
+package com.qualco.nationsapp.model.tasks;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

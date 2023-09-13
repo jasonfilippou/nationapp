@@ -1,8 +1,8 @@
 package com.qualco.nationsapp.service;
 
-import com.qualco.nationsapp.model.BasicCountryEntry;
-import com.qualco.nationsapp.model.CountryWithMaxGDPPerCapitaEntry;
-import com.qualco.nationsapp.model.StatsEntry;
+import com.qualco.nationsapp.model.tasks.BasicCountryEntry;
+import com.qualco.nationsapp.model.tasks.CountryWithMaxGDPPerCapitaEntry;
+import com.qualco.nationsapp.model.tasks.StatsEntry;
 import com.qualco.nationsapp.persistence.DBConnection;
 import com.qualco.nationsapp.util.PaginatedQueryParams;
 import com.qualco.nationsapp.util.logger.Logged;

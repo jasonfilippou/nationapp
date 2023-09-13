@@ -3,9 +3,9 @@ package com.qualco.nationsapp.controller;
 import static com.qualco.nationsapp.util.Constants.*;
 
 import com.google.common.collect.Maps;
-import com.qualco.nationsapp.model.BasicCountryEntry;
-import com.qualco.nationsapp.model.CountryWithMaxGDPPerCapitaEntry;
-import com.qualco.nationsapp.model.StatsEntry;
+import com.qualco.nationsapp.model.tasks.BasicCountryEntry;
+import com.qualco.nationsapp.model.tasks.CountryWithMaxGDPPerCapitaEntry;
+import com.qualco.nationsapp.model.tasks.StatsEntry;
 import com.qualco.nationsapp.service.NationsRestService;
 import com.qualco.nationsapp.util.PaginatedQueryParams;
 import com.qualco.nationsapp.util.SortOrder;
