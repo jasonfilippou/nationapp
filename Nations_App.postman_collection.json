@@ -1,0 +1,246 @@
+{
+	"info": {
+		"_postman_id": "bc0bdde0-8af6-4ea2-9402-1bfeaaebf770",
+		"name": "Nations App",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25468123"
+	},
+	"item": [
+		{
+			"name": "Tasks",
+			"item": [
+				{
+					"name": "Basic Country Info",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BEARER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "localhost:8080/nationapi/countries?page=1&items_in_page=20&sort_by_field=area&sort_order=DESC",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"nationapi",
+								"countries"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "items_in_page",
+									"value": "20"
+								},
+								{
+									"key": "sort_by_field",
+									"value": "area"
+								},
+								{
+									"key": "sort_order",
+									"value": "DESC"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All Languages of a Country",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BEARER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/nationapi/languages/China",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"nationapi",
+								"languages",
+								"China"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Max GDP Per Capita",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BEARER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/nationapi/maxgdppercapita?items_in_page=35&sort_by_field=country_code3&sort_order=DESC",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"nationapi",
+								"maxgdppercapita"
+							],
+							"query": [
+								{
+									"key": "items_in_page",
+									"value": "35"
+								},
+								{
+									"key": "sort_by_field",
+									"value": "country_code3"
+								},
+								{
+									"key": "sort_order",
+									"value": "DESC"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Stats",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BEARER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/nationapi/stats",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"nationapi",
+								"stats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Stats Of Region",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BEARER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/nationapi/stats",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"nationapi",
+								"stats"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "HTTP Requests corresponding to the tasks of the exercise."
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register New User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\" : \"jason.filippou@gmail.com\",\n    \"password\" : \"jasonfilippoupass\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/nationapi/register",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"nationapi",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get JWT Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\" : \"jason.filippou@gmail.com\",\n    \"password\" : \"jasonfilippoupass\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/nationapi/authenticate",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"nationapi",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "HTTP Requests corresponding to user authentication."
+		}
+	]
+}
