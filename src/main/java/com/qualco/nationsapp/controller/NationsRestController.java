@@ -3,9 +3,11 @@ package com.qualco.nationsapp.controller;
 import static com.qualco.nationsapp.util.Constants.*;
 
 import com.google.common.collect.Maps;
+import com.qualco.nationsapp.controller.assemblers.LanguagesAssembler;
 import com.qualco.nationsapp.controller.assemblers.MaxGDPPerCapitaEntryAssembler;
 import com.qualco.nationsapp.controller.assemblers.StatsEntryAssembler;
 import com.qualco.nationsapp.model.tasks.BasicCountryEntry;
+import com.qualco.nationsapp.model.tasks.CountryAndLanguageEntry;
 import com.qualco.nationsapp.model.tasks.MaxGDPPerCapitaEntry;
 import com.qualco.nationsapp.model.tasks.StatsEntry;
 import com.qualco.nationsapp.service.NationsRestService;
@@ -48,6 +50,7 @@ public class NationsRestController {
     private final NationsRestService service;
     private final StatsEntryAssembler statsEntryAssembler;
     private final MaxGDPPerCapitaEntryAssembler maxGDPPerCapitaEntryAssembler;
+    private final LanguagesAssembler languagesAssembler;
 
     // Task 1(a)
     @GetMapping("/countries")
@@ -77,13 +80,14 @@ public class NationsRestController {
 
     // Task 1(b)
     @GetMapping("/languages/{countryName}")
-    public ResponseEntity<List<String>> getLanguagesOfCountry(@PathVariable @NotBlank String countryName)
+    public ResponseEntity<List<EntityModel<CountryAndLanguageEntry>>> getLanguagesOfCountry(@PathVariable @NotBlank String countryName)
                 throws CountryNotFoundException {
         List<String> languages = service.getLanguagesOfCountry(countryName);
         if(languages.isEmpty()){
             throw new CountryNotFoundException(countryName);
         }
-        return ResponseEntity.ok(languages);
+        return ResponseEntity.ok(languages.stream().map(language->
+                languagesAssembler.toModel(new CountryAndLanguageEntry(countryName, language))).collect(Collectors.toList()));
     }
 
     // Task 2
