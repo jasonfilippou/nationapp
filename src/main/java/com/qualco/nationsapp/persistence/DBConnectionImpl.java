@@ -4,7 +4,7 @@ import static com.qualco.nationsapp.util.Constants.YEAR_FROM;
 import static com.qualco.nationsapp.util.Constants.YEAR_TO;
 
 import com.qualco.nationsapp.model.tasks.BasicCountryEntry;
-import com.qualco.nationsapp.model.tasks.CountryWithMaxGDPPerCapitaEntry;
+import com.qualco.nationsapp.model.tasks.MaxGDPPerCapitaEntry;
 import com.qualco.nationsapp.model.tasks.StatsEntry;
 import com.qualco.nationsapp.util.PaginatedQueryParams;
 import com.qualco.nationsapp.util.exception.DataAccessLayerException;
@@ -71,7 +71,7 @@ public class DBConnectionImpl implements DBConnection{
     }
 
     @Override
-    public List<CountryWithMaxGDPPerCapitaEntry> getMaxGDPPerCapita(PaginatedQueryParams params) {
+    public List<MaxGDPPerCapitaEntry> getMaxGDPPerCapita(PaginatedQueryParams params) {
         String query = String.format(
                 """
                 SELECT countries.name AS name, countries.country_code3 AS countryCode, max(gdp/population) AS maxGDPPerCapita
@@ -79,7 +79,7 @@ public class DBConnectionImpl implements DBConnection{
                 ORDER BY %s LIMIT %s OFFSET %s;
                 """, params.getSortByField() + " " + params.getSortOrder().toString(), params.getPageSize(), params.getPage() * params.getPageSize());
         try {
-            return jdbcTemplate.query(query, new BeanPropertyRowMapper<>(CountryWithMaxGDPPerCapitaEntry.class));
+            return jdbcTemplate.query(query, new BeanPropertyRowMapper<>(MaxGDPPerCapitaEntry.class));
         } catch(EmptyResultDataAccessException exception){
             log.warn("Empty result encountered.");
             return Collections.emptyList();

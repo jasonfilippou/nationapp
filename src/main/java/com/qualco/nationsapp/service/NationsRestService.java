@@ -1,7 +1,7 @@
 package com.qualco.nationsapp.service;
 
 import com.qualco.nationsapp.model.tasks.BasicCountryEntry;
-import com.qualco.nationsapp.model.tasks.CountryWithMaxGDPPerCapitaEntry;
+import com.qualco.nationsapp.model.tasks.MaxGDPPerCapitaEntry;
 import com.qualco.nationsapp.model.tasks.StatsEntry;
 import com.qualco.nationsapp.persistence.DBConnection;
 import com.qualco.nationsapp.util.PaginatedQueryParams;
@@ -26,7 +26,7 @@ public class NationsRestService {
         return dbConnection.getLanguagesOfCountry(country);
     }
 
-    public List<CountryWithMaxGDPPerCapitaEntry> getMaxGDPPerCapita(PaginatedQueryParams params){
+    public List<MaxGDPPerCapitaEntry> getMaxGDPPerCapita(PaginatedQueryParams params){
         return dbConnection.getMaxGDPPerCapita(params);
     }
 
