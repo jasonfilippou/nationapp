@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 public class StatsEntry {
     private String continentName;
     private String regionName;
+    private String countryName;
     private Integer year;
     private Long population;
     private BigDecimal gdp;
