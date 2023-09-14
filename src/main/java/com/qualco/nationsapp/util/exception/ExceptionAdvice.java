@@ -2,6 +2,7 @@ package com.qualco.nationsapp.util.exception;
 
 import jakarta.validation.ConstraintViolationException;
 
+import jakarta.validation.ValidationException;
 import org.hibernate.HibernateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,7 @@ public class ExceptionAdvice {
         MethodArgumentTypeMismatchException.class,
         ConstraintViolationException.class,
         BadDateFormatException.class,
+        ValidationException.class,
         HibernateException.class
     })
     @ResponseStatus(HttpStatus.BAD_REQUEST)

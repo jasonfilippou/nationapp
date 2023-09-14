@@ -3,6 +3,7 @@ package com.qualco.nationsapp.controller;
 import static com.qualco.nationsapp.util.Constants.*;
 
 import com.google.common.collect.Maps;
+import com.qualco.nationsapp.controller.assemblers.BasicCountryEntryAssembler;
 import com.qualco.nationsapp.controller.assemblers.LanguagesAssembler;
 import com.qualco.nationsapp.controller.assemblers.MaxGDPPerCapitaEntryAssembler;
 import com.qualco.nationsapp.controller.assemblers.StatsEntryAssembler;
@@ -51,10 +52,11 @@ public class NationsRestController {
     private final StatsEntryAssembler statsEntryAssembler;
     private final MaxGDPPerCapitaEntryAssembler maxGDPPerCapitaEntryAssembler;
     private final LanguagesAssembler languagesAssembler;
+    private final BasicCountryEntryAssembler basicCountryEntryAssembler;
 
     // Task 1(a)
     @GetMapping("/countries")
-    public ResponseEntity<List<BasicCountryEntry>> getAllCountries(
+    public ResponseEntity<List<EntityModel<BasicCountryEntry>>> getAllCountries(
             @RequestParam(name = "page", defaultValue = DEFAULT_PAGE_IDX) @Min(0) Integer page,
             @RequestParam(name = "items_in_page", defaultValue = DEFAULT_PAGE_SIZE) @Min(1) Integer size,
             @RequestParam(name = "sort_by_field", defaultValue = "name") @NonNull @NotBlank String sortByField,
@@ -68,7 +70,7 @@ public class NationsRestController {
                 .pageSize(size)
                 .sortByField(sortByField)
                 .sortOrder(sortOrder)
-                .build()));
+                .build()).stream().map(basicCountryEntryAssembler::toModel).collect(Collectors.toList()));
     }
 
     private void checkIfFieldToSortByIsAcceptable(String field, List<String> acceptableFields)
