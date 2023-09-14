@@ -33,7 +33,7 @@ public class DBConnectionImpl implements DBConnection{
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<BasicCountryEntry> getBasicCountryInfo(PaginatedQueryParams params) {
+    public List<BasicCountryEntry> getBasicCountryInfo(PaginatedQueryParams params) throws DataAccessLayerException {
         String query = String.format(
                 """
                 SELECT countries.name AS 'name', countries.area AS 'area', countries.country_code2 AS 'countryCode'
@@ -52,7 +52,7 @@ public class DBConnectionImpl implements DBConnection{
     }
 
     @Override
-    public List<String> getLanguagesOfCountry(String country) {
+    public List<String> getLanguagesOfCountry(String country) throws DataAccessLayerException {
         String query = String.format(
                 """
                 SELECT languages.language AS language 
@@ -71,7 +71,7 @@ public class DBConnectionImpl implements DBConnection{
     }
 
     @Override
-    public List<MaxGDPPerCapitaEntry> getMaxGDPPerCapita(PaginatedQueryParams params) {
+    public List<MaxGDPPerCapitaEntry> getMaxGDPPerCapita(PaginatedQueryParams params) throws DataAccessLayerException {
         String query = String.format(
                 """
                 SELECT countries.name AS name, countries.country_code3 AS countryCode, max(gdp/population) AS maxGDPPerCapita
@@ -90,7 +90,7 @@ public class DBConnectionImpl implements DBConnection{
     }
 
     @Override
-    public List<StatsEntry> getStats(PaginatedQueryParams params) {
+    public List<StatsEntry> getStats(PaginatedQueryParams params) throws DataAccessLayerException {
         String query = String.format(
                 """
                 SELECT continents.name AS continent_name, regions.name AS region_name, countries.name AS country_name,

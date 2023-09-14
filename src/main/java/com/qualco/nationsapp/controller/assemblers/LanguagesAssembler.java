@@ -12,6 +12,12 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
+/**
+ * A {@link RepresentationModelAssembler} that formats {@link CountryAndLanguageEntry} entities for presenting a link to
+ * relevant methods of {@link NationsRestController}.
+ *
+ * @author jason
+ */
 @Component
 public class LanguagesAssembler implements RepresentationModelAssembler<CountryAndLanguageEntry, EntityModel<CountryAndLanguageEntry>> {
 

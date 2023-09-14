@@ -12,6 +12,12 @@ import static com.qualco.nationsapp.util.Constants.*;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+/**
+ * A {@link RepresentationModelAssembler} that formats {@link BasicCountryEntry} entities for presenting a link to
+ * relevant methods of {@link NationsRestController}.
+ *
+ * @author jason
+ */
 @Component
 public class BasicCountryEntryAssembler implements RepresentationModelAssembler<BasicCountryEntry, EntityModel<BasicCountryEntry>> {
 

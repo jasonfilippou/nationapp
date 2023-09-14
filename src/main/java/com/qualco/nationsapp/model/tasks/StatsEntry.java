@@ -5,6 +5,11 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
+/**
+ * A simple POJO to answer task 3 of the instructions.
+ *
+ * @author jason
+ */
 @Data
 @NoArgsConstructor
 public class StatsEntry {
