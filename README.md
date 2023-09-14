@@ -13,13 +13,12 @@
    2. [Task 1(b)](#task-1b)
    3. [Task 2](#task-2)
    4. [Task 3](#task-3)
-3. [Documentation](#documentation)
-4. [Logging details](#logging)
+3. [Logging details](#logging)
+4. [Documentation](#documentation)
 5. [Endpoint security](#endpoint-security)
 6. [Exception handling](#exception-handling)
-7. [Documentation details](#documentation-details)
-8. [Implementation details](#implementation-details)
-9. [Known Issues](#known-issues)
+7. [Implementation details](#implementation-details)
+8. [Known Issues](#known-issues)
 
 ## Getting started
 
@@ -604,6 +603,15 @@ sorted by continent name, ascending).
   }
 ]
 ```
+
+## Logging
+
+We employ basic AOP features to offer logging on-demand for any class' methods. The custom annotation
+`@Logged` can be applied to any class we desire and offer logging at the `INFO` and `WARN` levels for entrance
+into a method, exit from a method as well as exception throwing from a method.
+
+Have a look at the package `com.qualco.nationsapp.util.logger` for more.
+
 ## Documentation
 
 We provide this README file, JavaDocs and annotations for the OpenAPI 3.0 page.
@@ -626,14 +634,6 @@ The following classes will be interesting to look at to see how we implement the
 - `JwtTokenUtil`
 - `JwtAuthenticationService`
 - `JwtUserDetailsService`
-
-## Logging
-
-We employ basic AOP features to offer logging on-demand for any class' methods. The custom annotation
-`@Logged` can be applied to any class we desire and offer logging at the `INFO` and `WARN` levels for entrance
-into a method, exit from a method as well as exception throwing from a method.
-
-Have a look at the package `com.qualco.nationsapp.util.logger` for more.
 
 ## Exception handling
 
