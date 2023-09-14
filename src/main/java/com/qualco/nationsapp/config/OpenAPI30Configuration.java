@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
 @OpenAPIDefinition(
         info =
                 @Info(
-                        title = "XM Crypto Recommendation Service API",
+                        title = "Nations API for Qualco",
                         version = "${api.version}",
                         contact =
                                 @Contact(

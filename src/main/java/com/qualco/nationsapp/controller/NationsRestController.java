@@ -19,6 +19,10 @@ import com.qualco.nationsapp.util.exception.CountryNotFoundException;
 import com.qualco.nationsapp.util.exception.InvalidSortByFieldException;
 import com.qualco.nationsapp.util.logger.Logged;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import jakarta.validation.ValidationException;
@@ -55,6 +59,27 @@ public class NationsRestController {
     private final BasicCountryEntryAssembler basicCountryEntryAssembler;
 
     // Task 1(a)
+
+    @Operation(summary = "Return name, area and country_code2 for all countries")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Data successfully returned",
+                            content = @Content),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Bad sorting / pagination parameters provided",
+                            content = @Content),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Unauthenticated user",
+                            content = @Content),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "System error",
+                            content = @Content)
+            })
     @GetMapping("/countries")
     public ResponseEntity<List<EntityModel<BasicCountryEntry>>> getAllCountries(
             @RequestParam(name = "page", defaultValue = DEFAULT_PAGE_IDX) @Min(0) Integer page,
@@ -81,6 +106,30 @@ public class NationsRestController {
     }
 
     // Task 1(b)
+    @Operation(summary = "Get languages of provided country")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Data successfully returned",
+                            content = @Content),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Empty country string provided",
+                            content = @Content),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Unauthenticated user",
+                            content = @Content),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Country not found",
+                            content = @Content),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "System error",
+                            content = @Content)
+            })
     @GetMapping("/languages/{countryName}")
     public ResponseEntity<List<EntityModel<CountryAndLanguageEntry>>> getLanguagesOfCountry(@PathVariable @NotBlank String countryName)
                 throws CountryNotFoundException {
@@ -93,6 +142,27 @@ public class NationsRestController {
     }
 
     // Task 2
+
+    @Operation(summary = "Get name, country_code3 and maximum GDP per capita for all countries across all years of data.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Data successfully returned",
+                            content = @Content),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Bad sorting / pagination parameters provided",
+                            content = @Content),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Unauthenticated user",
+                            content = @Content),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "System error",
+                            content = @Content)
+            })
     @GetMapping("/maxgdppercapita")
     public ResponseEntity<List<EntityModel<MaxGDPPerCapitaEntry>>> getMaxGdpPerCapita(
             @RequestParam(name = "page", defaultValue = DEFAULT_PAGE_IDX) @Min(0) Integer page,
@@ -110,6 +180,26 @@ public class NationsRestController {
     }
 
     // Task 3(a) and 3(b)
+    @Operation(summary = "Get continent, region, country, year, population and gdp for all countries.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Data successfully returned",
+                            content = @Content),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Bad sorting / pagination / filter parameters provided",
+                            content = @Content),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Unauthenticated user",
+                            content = @Content),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "System error",
+                            content = @Content)
+            })
     @GetMapping("/stats")
     public ResponseEntity<List<EntityModel<StatsEntry>>> getStats(
             @RequestParam(name = "page", defaultValue = DEFAULT_PAGE_IDX) @Min(0) Integer page,
@@ -167,8 +257,28 @@ public class NationsRestController {
         return filterParams;
     }
 
-    // Modification of tasks 3(a) and 3(b), mostly for model assembler
+    // 3(a) and 3(b) with input region.
 
+    @Operation(summary = "Get continent, country, year, population and gdp for all countries of provided region.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Data successfully returned",
+                            content = @Content),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Bad sorting / pagination / region parameters provided",
+                            content = @Content),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Unauthenticated user",
+                            content = @Content),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "System error",
+                            content = @Content)
+            })
     @GetMapping("/stats/{region}")
     public ResponseEntity<List<EntityModel<StatsEntry>>> getStats(
             @RequestParam(name = "page", defaultValue = DEFAULT_PAGE_IDX) @Min(0) Integer page,
@@ -188,6 +298,4 @@ public class NationsRestController {
                 .filterParams(Map.of("region", region))
                 .build()).stream().map(statsEntryAssembler::toModel).collect(Collectors.toList()));
     }
-
-
 }
