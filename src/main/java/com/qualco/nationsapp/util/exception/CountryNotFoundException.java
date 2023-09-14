@@ -2,6 +2,12 @@ package com.qualco.nationsapp.util.exception;
 
 import lombok.Getter;
 
+/**
+ * Α {@link RuntimeException} thrown by our application when a query based on a provided country could not find
+ * any associated data.
+ *
+ * @author jason
+ */
 @Getter
 public class CountryNotFoundException extends RuntimeException{
 

@@ -46,21 +46,14 @@ public interface DBConnection {
     List<MaxGDPPerCapitaEntry> getMaxGDPPerCapita(PaginatedQueryParams params) throws DataAccessLayerException;
 
     /**
-     * Answer task 3 of the instructions, returning the continent name, region name, year, population, gdp for all
+     * Answer task 3 of the instructions, returning the continent name, region name, country_name, year, population, gdp for all
      * countries in our database.
-     * @param params
-     * @return
-     * @throws DataAccessLayerException
+     * @param params An instance of {@link PaginatedQueryParams} which encapsulates the sorting and pagination properties
+     *               set by our query.
+     * @return Α {@link List} of {@link StatsEntry} instances, one per row returned by the underlying {@code SELECT}
+     * statement.
+     * @throws DataAccessLayerException if an unrecoverable error occurs at the database level.
      */
     List<StatsEntry> getStats(PaginatedQueryParams params) throws DataAccessLayerException;
 
-    /*
-    public class StatsEntry {
-    private String continentName;
-    private String regionName;
-    private Integer year;
-    private Long population;
-    private BigDecimal gdp;
-}
-     */
 }

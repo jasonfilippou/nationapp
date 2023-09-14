@@ -223,7 +223,7 @@ public class NationsRestController {
      * @param page The page of data to return.
      * @param size The number of entries per page.
      * @param sortByField The field to sort the results by. Supported: &quot;continent_name&quot;, &quot;region_name&quot;,
-     *                   &quot;country_name&quot, &quot;year&quot;, &quot;population&quot;, &quot;gdp&quot;.
+     *                   &quot;country_name&quot;, &quot;year&quot;, &quot;population&quot;, &quot;gdp&quot;.
      * @param sortOrder The ordering of the sort required: ASC or DESC.
      * @param yearFrom Optional parameter. The first year to include results of.
      * @param yearTo Optional parameter. The last year to include results of.
@@ -232,7 +232,7 @@ public class NationsRestController {
      * {@link StatsEntry} instances, one per country that satisfies the filters, if any, or a different status code and
      * helpful message.
      * @throws InvalidSortByFieldException If the field to sort by is not one of &quot;continent_name&quot;, &quot;region_name&quot;,
-     *                   &quot;country_name&quot, &quot;year&quot;, &quot;population&quot;, or &quot;gdp&quot;
+     *                   &quot;country_name&quot;, &quot;year&quot;, &quot;population&quot;, or &quot;gdp&quot;
      * @throws BadDateFormatException If either one of the years specified is not in YYYY format.
      * @throws ValidationException If the &quot; region &quot; parameter is provided, but it maps to an empty string.
      * @throws ConstraintViolationException If there is some other violation of constraints for sorting / pagination parameters.
@@ -322,13 +322,13 @@ public class NationsRestController {
      * @param page The page of data to return.
      * @param size The number of entries per page.
      * @param sortByField The field to sort the results by. Supported: &quot;continent_name&quot;, &quot;region_name&quot;,
-     *                   &quot;country_name&quot, &quot;year&quot;, &quot;population&quot;, &quot;gdp&quot;.
+     *                   &quot;country_name&quot;, &quot;year&quot;, &quot;population&quot;, &quot;gdp&quot;.
      * @param sortOrder The ordering of the sort required: ASC or DESC.
      * @param region The region to get data of.
      * @return Α {@link ResponseEntity} with HTTP Status 200 OK and a {@link List} of {@link EntityModel} wrappers over
      * {@link StatsEntry} instances, one per country that satisfies the filters, if any, or a different status code and helpful message.
      * @throws InvalidSortByFieldException If the field to sort by is not one of &quot;continent_name&quot;, &quot;region_name&quot;,
-     *                   &quot;country_name&quot, &quot;year&quot;, &quot;population&quot;, or &quot;gdp&quot;
+     *                   &quot;country_name&quot;, &quot;year&quot;, &quot;population&quot;, or &quot;gdp&quot;
      * @throws BadDateFormatException If either one of the years specified is not in YYYY format.
      * @throws ValidationException If the &quot; region &quot; parameter is provided, but it maps to an empty string.
      * @throws ConstraintViolationException If there is some other violation of constraints for sorting / pagination parameters.

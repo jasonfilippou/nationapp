@@ -1,0 +1,14 @@
+com.qualco.nationsapp
+com.qualco.nationsapp.config
+com.qualco.nationsapp.controller
+com.qualco.nationsapp.controller.assemblers
+com.qualco.nationsapp.model.jwt
+com.qualco.nationsapp.model.tasks
+com.qualco.nationsapp.model.user
+com.qualco.nationsapp.persistence
+com.qualco.nationsapp.service
+com.qualco.nationsapp.service.jwt
+com.qualco.nationsapp.util
+com.qualco.nationsapp.util.exception
+com.qualco.nationsapp.util.jwt
+com.qualco.nationsapp.util.logger

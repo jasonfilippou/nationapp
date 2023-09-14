@@ -5,6 +5,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 
+/**
+ * Various constants used by our application.
+ *
+ * @author jason
+ */
 public final class Constants {
     private Constants(){}
 
@@ -21,6 +26,13 @@ public final class Constants {
     public static final String DEFAULT_SORT_ORDER = "ASC";
 
     public static final String GLOBAL_YEAR_PATTERN = "yyyy";
+
+    /**
+     * A global {@link DateTimeFormatter} instance used to validate inputted years in filters of
+     * {@link com.qualco.nationsapp.controller.NationsRestController} methods.
+     *
+     * @see com.qualco.nationsapp.controller.NationsRestController#getStats(Integer, Integer, String, SortOrder, String, String, String)
+     */
     public static final DateTimeFormatter YEAR_FORMATTER = new DateTimeFormatterBuilder()
             .appendPattern(GLOBAL_YEAR_PATTERN)
             .parseDefaulting(ChronoField.MONTH_OF_YEAR, 1)
